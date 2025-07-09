@@ -1,56 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- 
-      This is an HTML comment
-      You can write text in a comment and the content won't be visible in the page
-    -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIFF - Share Target Picker</title>
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.16.1/sdk.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="https://glitch.com/favicon.ico" />
+    h1 {
+      color: #066ebc;
+    }
 
-  <!--
-      This is the page head - it contains info the browser uses
-      Like the title, which appears on the browser tab but not inside the page
-      Further down you'll see the content that displays in the page
-    -->
-  <title>Hello World!</title>
+    button {
+      background-color: #066ebc;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
 
-  <!-- The website stylesheet -->
-  <link rel="stylesheet" href="/style.css" />
-
-  <!-- The website JavaScript file -->
-  <script src="/script.js" defer></script>
+    button:hover {
+      background-color: #044a8b;
+    }
+  </style>
 </head>
-
 <body>
-  <!--
-      The body includes the content you see in the page
-      Each element is defined using tags, like this <div></div>
-      The attributes like class="wrapper" let us style elements in the CSS
-    -->
-  <div class="wrapper">
-    <div class="content" role="main">
-      <h1 class="title">Oh hi website!</h1>
-      <img src="/cool-website.svg" class="illustration" alt="cool website" />
-      <div class="instructions">
-        <p>
-          Fork <a href="https://github.com/glitchdotcom/website-to-compute">this project</a> and open it in a GitHub Codespace.
-        </p>
-        <p> Follow the steps in the README to deploy your new website to Fastly in a few steps!
-        </p>
+  <h1>แชร์ข้อความผ่าน LINE</h1>
+  <button id="shareButton">แชร์ให้เพื่อน</button>
 
-      </div>
+  <script>
+    async function main() {
+      try {
+        // Initialize LIFF
+        await liff.init({ liffId: "2006730041-jP9nzvJX" });
 
-      <footer class="footer">
-        <div>
-          <a class="remix" href="https://github.com/glitchdotcom/website-to-compute">🚧 Get your own site</a>
-        </div>
-      </footer>
-    </div>
-  </div>
+        // Check if LIFF is in LINE client
+        if (!liff.isInClient()) {
+          alert("โปรดเปิดลิงก์นี้ในแอป LINE");
+          return;
+        }
+
+        // Check if shareTargetPicker API is available
+        if (!liff.isApiAvailable('shareTargetPicker')) {
+          alert("ฟีเจอร์การแชร์ไม่พร้อมใช้งานในตอนนี้");
+          return;
+        }
+
+        // Add event listener to the share button
+        document.getElementById("shareButton").addEventListener("click", async () => {
+          try {
+            const result = await liff.shareTargetPicker([
+              {
+                type: "flex",
+                altText: "จอห์นชาวไร่ บริการรับจัดสวน",
+                contents: {
+                  type: "bubble",
+                  hero: {
+                    type: "image",
+                    url: "https://img2.pic.in.th/pic/1000004261.webp",
+                    size: "full",
+                    aspectRatio: "9:16",
+                    aspectMode: "cover",
+                    action: {
+                      type: "uri",
+                      uri: "https://liff.line.me/2006750889-13mvjpnQ"
+                    }
+                  },
+                  body: {
+                    type: "box",
+                    layout: "vertical",
+                    spacing: "md",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "จอห์นชาวไร่ บริการรับจัดสวน",
+                        weight: "bold",
+                        size: "xl",
+                        align: "center",
+                        color: "#066ebc"
+                      },
+                      {
+                        type: "text",
+                        text: "เปลี่ยนทุกพื้นที่ให้เขียวขจี ด้วยความใส่ใจในทุกดีเทล",
+                        size: "sm",
+                        color: "#6B6B6B",
+                        align: "center",
+                        wrap: true
+                      },
+                      {
+                        type: "text",
+                        text: "“เราเชื่อว่าต้นไม้ไม่ได้แค่เติบโตในดิน แต่ยังเติบโตในใจคน”",
+                        size: "sm",
+                        color: "#6B6B6B",
+                        align: "center",
+                        wrap: true,
+                        style: "italic"
+                      },
+                      {
+                        type: "image",
+                        url: "https://img5.pic.in.th/file/secure-sv1/52679024_310110543031585_2428582767827615744_n.jpg",
+                        size: "md",
+                        aspectMode: "cover"
+                      }
+                    ]
+                  },
+                  footer: {
+                    type: "box",
+                    layout: "vertical",
+                    spacing: "md",
+                    contents: [
+                      {
+                        type: "button",
+                        style: "primary",
+                        action: {
+                          type: "uri",
+                          label: "Facebook",
+                          uri: "https://www.facebook.com/Blackcliffgarden/"
+                        },
+                        color: "#3b5998"
+                      },
+                      {
+                        type: "button",
+                        style: "primary",
+                        action: {
+                          type: "uri",
+                          label: "YouTube",
+                          uri: "https://www.youtube.com/@KasetGuidelines"
+                        },
+                        color: "#ff0000"
+                      },
+                      {
+                        type: "button",
+                        style: "primary",
+                        action: {
+                          type: "uri",
+                          label: "TikTok",
+                          uri: "https://www.tiktok.com/@kasetguidlines"
+                        },
+                        color: "#000000"
+                      },
+                      {
+                        type: "button",
+                        style: "primary",
+                        action: {
+                          type: "uri",
+                          label: "ติดต่อเรา",
+                          uri: "https://lin.ee/N0fdTKK"
+                        },
+                        color: "#FFA500"
+                      },
+                      {
+                        type: "button",
+                        style: "secondary",
+                        action: {
+                          type: "uri",
+                          label: "แชร์ให้เพื่อน",
+                          uri: "https://liff.line.me/2006730041-jP9nzvJX"
+                        }
+                      },
+                      
+                      {
+                        type: "image",
+                        url: "https://img5.pic.in.th/file/secure-sv1/1978.png",
+                        size: "md",
+                        aspectMode: "cover"
+                      },
+                      {
+                        type: "button",
+                        style: "secondary",
+                        action: {
+                          type: "uri",
+                          label: "Speedcom.co.th",
+                          uri: "https://speedcom.co.th/?ref=zwarruzq"
+                        },
+                        color: "#ef6c00"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]);
+
+            if (!result) {
+              alert("คุณยกเลิกการแชร์");
+            }
+
+            // Close the LIFF window
+            liff.closeWindow();
+          } catch (error) {
+            console.error("Error sharing message:", error);
+            alert("เกิดข้อผิดพลาดในการแชร์ข้อความ");
+          }
+        });
+      } catch (error) {
+        console.error("Error initializing LIFF:", error);
+        alert("ไม่สามารถเริ่มต้น LIFF ได้");
+      }
+    }
+
+    main();
+  </script>
 </body>
-
 </html>
